@@ -34,7 +34,8 @@ class StoreRepo {
       '_method': 'put', 'name': store.name, 'contact_number': store.phone, 'schedule_order': store.scheduleOrder ? '1' : '0',
       'address': store.address, 'minimum_order': store.minimumOrder.toString(), 'delivery': store.delivery ? '1' : '0',
       'take_away': store.takeAway ? '1' : '0', 'gst_status': store.gstStatus ? '1' : '0', 'gst': store.gstCode,
-      'delivery_charge': store.deliveryCharge.toString(), 'veg': store.veg.toString(), 'non_veg': store.nonVeg.toString(),
+      'minimum_delivery_charge': store.minimumShippingCharge.toString(), 'per_km_delivery_charge': store.perKmShippingCharge.toString(),
+      'veg': store.veg.toString(), 'non_veg': store.nonVeg.toString(),
       'order_place_to_schedule_interval': store.orderPlaceToScheduleInterval.toString(), 'minimum_delivery_time': min,
       'maximum_delivery_time': max, 'delivery_time_type': type,
     });

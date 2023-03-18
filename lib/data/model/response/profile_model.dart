@@ -142,7 +142,8 @@ class Store {
   String gstCode;
   int selfDeliverySystem;
   bool posSystem;
-  double deliveryCharge;
+  double minimumShippingCharge;
+  double perKmShippingCharge;
   String deliveryTime;
   int veg;
   int nonVeg;
@@ -179,7 +180,8 @@ class Store {
         this.gstCode,
         this.selfDeliverySystem,
         this.posSystem,
-        this.deliveryCharge,
+        this.minimumShippingCharge,
+        this.perKmShippingCharge,
         this.deliveryTime,
         this.veg,
         this.nonVeg,
@@ -217,7 +219,8 @@ class Store {
     gstCode = json['gst_code'];
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
-    deliveryCharge = json['delivery_charge'].toDouble();
+    minimumShippingCharge = json['minimum_shipping_charge'] != null ? json['minimum_shipping_charge'].toDouble() : 0.0;
+    perKmShippingCharge = json['per_km_shipping_charge'] != null ? json['per_km_shipping_charge'].toDouble() : 0.0;
     deliveryTime = json['delivery_time'];
     veg = json['veg'];
     nonVeg = json['non_veg'];
@@ -261,7 +264,8 @@ class Store {
     data['gst_code'] = this.gstCode;
     data['self_delivery_system'] = this.selfDeliverySystem;
     data['pos_system'] = this.posSystem;
-    data['delivery_charge'] = this.deliveryCharge;
+    data['minimum_shipping_charge'] = this.minimumShippingCharge;
+    data['per_km_shipping_charge'] = this.perKmShippingCharge;
     data['delivery_time'] = this.deliveryTime;
     data['veg'] = this.veg;
     data['non_veg'] = this.nonVeg;

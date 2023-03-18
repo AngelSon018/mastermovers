@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/controller/splash_controller.dart';
 import 'package:sixam_mart_store/data/model/body/store_body.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/images.dart';
@@ -50,7 +49,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
   void initState() {
     super.initState();
 
-    Get.find<SplashController>().getModules();
+    // Get.find<SplashController>().getModules();
     Get.find<AuthController>().getZoneList();
     Get.find<AuthController>().setDeliveryTimeTypeIndex(Get.find<AuthController>().deliveryTimeTypeList[0], false);
   }
@@ -152,9 +151,6 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
                     ),
                   ]),
                 ),
-                SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-
-                Expanded(child: ModuleViewWidget()),
               ],
               ),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -239,6 +235,9 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
 
               authController.zoneList != null ? SelectLocationView(fromView: true) : Center(child: CircularProgressIndicator()),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+
+             authController.moduleList != null ? ModuleViewWidget() : SizedBox(),
+              SizedBox(height: authController.moduleList != null ? Dimensions.PADDING_SIZE_LARGE : 0),
 
               Center(child: Text(
                 'owner_information'.tr,
@@ -371,7 +370,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
                       maxDeliveryTime: _maxTime, lat: authController.restaurantLocation.latitude.toString(), email: _email,
                       lng: authController.restaurantLocation.longitude.toString(), fName: _fName, lName: _lName, phone: _phone,
                       password: _password, zoneId: authController.zoneList[authController.selectedZoneIndex].id.toString(),
-                      moduleId: Get.find<SplashController>().moduleList[Get.find<SplashController>().selectedModuleIndex].id.toString(),
+                      moduleId: authController.moduleList[authController.selectedModuleIndex].id.toString(),
                       deliveryTimeType: authController.deliveryTimeTypeList[authController.deliveryTimeTypeIndex],
                     ));
                   }

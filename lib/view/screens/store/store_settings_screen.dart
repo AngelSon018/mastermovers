@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:sixam_mart_store/controller/store_controller.dart';
 import 'package:sixam_mart_store/controller/splash_controller.dart';
 import 'package:sixam_mart_store/data/model/response/config_model.dart';
@@ -33,6 +35,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final TextEditingController _gstController = TextEditingController();
   final TextEditingController _minimumController = TextEditingController();
   final TextEditingController _maximumController = TextEditingController();
+  final TextEditingController _deliveryChargePerKmController = TextEditingController();
   final FocusNode _nameNode = FocusNode();
   final FocusNode _contactNode = FocusNode();
   final FocusNode _addressNode = FocusNode();
@@ -40,6 +43,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final FocusNode _deliveryFeeNode = FocusNode();
   final FocusNode _minimumNode = FocusNode();
   final FocusNode _maximumNode = FocusNode();
+  final FocusNode _minimumProcessingTimeNode = FocusNode();
+  final FocusNode _deliveryChargePerKmNode = FocusNode();
   Profile.Store _store;
   Module _module = Get.find<SplashController>().configModel.moduleConfig.module;
 
@@ -53,7 +58,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
     _contactController.text = widget.store.phone;
     _addressController.text = widget.store.address;
     _orderAmountController.text = widget.store.minimumOrder.toString();
-    _deliveryFeeController.text = widget.store.deliveryCharge.toString();
+    _deliveryFeeController.text = widget.store.minimumShippingCharge.toString();
+    _deliveryChargePerKmController.text = widget.store.perKmShippingCharge.toString();
     _gstController.text = widget.store.gstCode;
     _processingTimeController.text = widget.store.orderPlaceToScheduleInterval.toString();
     if(widget.store.deliveryTime != null && widget.store.deliveryTime.isNotEmpty) {
@@ -95,8 +101,10 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
               Align(alignment: Alignment.center, child: Stack(children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                  child: storeController.rawLogo != null ? Image.network(
+                  child: storeController.rawLogo != null ? GetPlatform.isWeb ? Image.network(
                     storeController.rawLogo.path, width: 150, height: 120, fit: BoxFit.cover,
+                  ) : Image.file(
+                    File(storeController.rawLogo.path), width: 150, height: 120, fit: BoxFit.cover,
                   ) : FadeInImage.assetNetwork(
                     placeholder: Images.placeholder,
                     image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${widget.store.logo}',
@@ -169,12 +177,22 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                   hintText: 'delivery_fee'.tr,
                   controller: _deliveryFeeController,
                   focusNode: _deliveryFeeNode,
-                  nextFocus: _minimumNode,
+                  nextFocus: _deliveryChargePerKmNode,
                   inputType: TextInputType.number,
                   isAmount: true,
                 )) : SizedBox(),
               ]),
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+
+              _store.selfDeliverySystem == 1 ? MyTextField(
+                hintText: 'delivery_charge_per_km'.tr,
+                controller: _deliveryChargePerKmController,
+                focusNode: _deliveryChargePerKmNode,
+                nextFocus: _minimumNode,
+                inputType: TextInputType.number,
+                isAmount: true,
+              ) : SizedBox(),
+              SizedBox(height: _store.selfDeliverySystem == 1 ? Dimensions.PADDING_SIZE_LARGE : 0),
 
               Align(alignment: Alignment.centerLeft, child: Text(
                 'approximate_delivery_time'.tr,
@@ -214,7 +232,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
               _module.orderPlaceToScheduleInterval ? MyTextField(
                 hintText: 'minimum_processing_time'.tr,
                 controller: _processingTimeController,
-                inputAction: TextInputAction.done,
+                focusNode: _minimumProcessingTimeNode,
+                nextFocus: _deliveryChargePerKmNode,
                 inputType: TextInputType.number,
                 isAmount: true,
               ) : SizedBox(),
@@ -308,8 +327,10 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
               Stack(children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                  child: storeController.rawCover != null ? Image.network(
+                  child: storeController.rawCover != null ? GetPlatform.isWeb ? Image.network(
                     storeController.rawCover.path, width: context.width, height: 170, fit: BoxFit.cover,
+                  ) : Image.file(
+                    File(storeController.rawCover.path), width: context.width, height: 170, fit: BoxFit.cover,
                   ) : FadeInImage.assetNetwork(
                     placeholder: Images.restaurant_cover,
                     image: '${Get.find<SplashController>().configModel.baseUrls.storeCoverPhotoUrl}/${widget.store.coverPhoto}',
@@ -353,6 +374,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
               String _minimum = _minimumController.text.trim();
               String _maximum = _maximumController.text.trim();
               String _processingTime = _processingTimeController.text.trim();
+              String _deliveryChargePerKm = _deliveryChargePerKmController.text.trim();
               String _gstCode = _gstController.text.trim();
               bool _showRestaurantText = _module.showRestaurantText;
               if(_name.isEmpty) {
@@ -369,11 +391,14 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                 showCustomSnackBar('enter_minimum_delivery_time'.tr);
               }else if(_maximum.isEmpty) {
                 showCustomSnackBar('enter_maximum_delivery_time'.tr);
+              }else if(_deliveryChargePerKm.isEmpty) {
+                showCustomSnackBar('enter_delivery_charge_per_km'.tr);
               }else if(storeController.durationIndex == 0) {
                 showCustomSnackBar('select_delivery_time_type'.tr);
               }else if(_module.orderPlaceToScheduleInterval && _processingTime.isEmpty) {
                 showCustomSnackBar('enter_minimum_processing_time'.tr);
-              }else if(!storeController.isStoreVeg && !storeController.isStoreNonVeg){
+              }else if((_module.vegNonVeg && Get.find<SplashController>().configModel.toggleVegNonVeg) &&
+                  !storeController.isStoreVeg && !storeController.isStoreNonVeg){
                 showCustomSnackBar('select_at_least_one_item_type'.tr);
               }else if(_module.orderPlaceToScheduleInterval && _processingTime.isEmpty) {
                 showCustomSnackBar('enter_minimum_processing_time'.tr);
@@ -388,7 +413,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                 _store.gstCode = _gstCode;
                 _store.orderPlaceToScheduleInterval = _module.orderPlaceToScheduleInterval
                     ? double.parse(_processingTimeController.text).toInt() : 0;
-                _store.deliveryCharge = double.parse(_deliveryFee);
+                _store.minimumShippingCharge = double.parse(_deliveryFee);
+                _store.perKmShippingCharge = double.parse(_deliveryChargePerKm);
                 _store.veg = (_module.vegNonVeg && storeController.isStoreVeg) ? 1 : 0;
                 _store.nonVeg = (!_module.vegNonVeg || storeController.isStoreNonVeg) ? 1 : 0;
                 storeController.updateStore(

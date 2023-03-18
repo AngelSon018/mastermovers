@@ -28,6 +28,7 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
   void initState() {
     super.initState();
 
+    Get.find<AuthController>().getProfile();
     _tabController = TabController(length: _review ? 2 : 1, initialIndex: 0, vsync: this);
     _tabController.addListener(() {
       Get.find<StoreController>().setTabIndex(_tabController.index);
@@ -92,12 +93,16 @@ class _StoreScreenState extends State<StoreScreen> with TickerProviderStateMixin
                 color: Theme.of(context).cardColor,
                 child: Column(children: [
                   Row(children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                      child: CustomImage(
-                        image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${_store.logo}',
-                        height: 40, width: 50, fit: BoxFit.cover,
-                      ),
+                    Builder(
+                      builder: (context) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                          child: CustomImage(
+                            image: '${Get.find<SplashController>().configModel.baseUrls.storeImageUrl}/${_store.logo}',
+                            height: 40, width: 50, fit: BoxFit.cover,
+                          ),
+                        );
+                      }
                     ),
                     SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

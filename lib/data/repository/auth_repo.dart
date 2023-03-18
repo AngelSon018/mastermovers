@@ -196,4 +196,8 @@ class AuthRepo {
     return sharedPreferences.getString(AppConstants.USER_ADDRESS);
   }
 
+  Future<Response> getModules(int zoneId) async {
+    return await apiClient.getData('${AppConstants.MODULES_URI}?zone_id=$zoneId');
+  }
+
 }

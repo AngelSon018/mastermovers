@@ -43,7 +43,6 @@ class HomeScreen extends StatelessWidget {
         )),
         actions: [IconButton(
           icon: GetBuilder<NotificationController>(builder: (notificationController) {
-            bool _hasNewNotification = false;
             return Stack(children: [
               Icon(Icons.notifications, size: 25, color: Theme.of(context).textTheme.bodyText1.color),
               notificationController.hasNotification ? Positioned(top: 0, right: 0, child: Container(

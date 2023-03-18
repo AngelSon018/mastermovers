@@ -2,8 +2,8 @@ import 'package:sixam_mart_store/data/model/response/language_model.dart';
 import 'package:sixam_mart_store/util/images.dart';
 
 class AppConstants {
-  static const String APP_NAME = 'MasterMovers SME';
-  static const double APP_VERSION = 1.6;
+  static const String APP_NAME = 'MasterMovers Seller';
+  static const double APP_VERSION = 1.7;
 
   static const String BASE_URL = 'https://admin.mastermovers.ph';
   static const String CONFIG_URI = '/api/v1/config';

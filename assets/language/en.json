@@ -431,5 +431,7 @@
   "enter_store_name": "Enter store name",
   "select_store_logo": "Select store logo",
   "select_store_cover_photo": "Select store cover photo",
-  "set_store_location": "Select store location"
+  "set_store_location": "Select store location",
+  "delivery_charge_per_km": "Delivery Charge Per km",
+  "enter_delivery_charge_per_km": "Enter Delivery Charge Per km"
 }

@@ -171,11 +171,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL, vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                      color: Theme.of(context).primaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
                     ),
                     child: Text(
                       _order.paymentMethod == 'cash_on_delivery' ? 'cash_on_delivery'.tr : _order.paymentMethod == 'wallet' ? 'wallet_payment' : 'digital_payment'.tr,
-                      style: robotoRegular.copyWith(color: Theme.of(context).cardColor, fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),
+                      style: robotoMedium.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),
                     ),
                   ),
                 ]),
@@ -304,6 +304,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                   (_order.orderStatus != 'delivered' && _order.orderStatus != 'failed'
                   && _order.orderStatus != 'canceled' && _order.orderStatus != 'refunded') ? TextButton.icon(
                     onPressed: () async {
+                      _timer.cancel();
                       await Get.toNamed(RouteHelper.getChatRoute(
                         notificationBody: NotificationBody(
                           orderId: _order.id, customerId: _order.customer.id,
@@ -313,6 +314,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                           lName: _order.customer.lName, image: _order.customer.image,
                         ),
                       ));
+                      _startApiCalling();
                     },
                     icon: Icon(Icons.message, color: Theme.of(context).primaryColor, size: 20),
                     label: Text(

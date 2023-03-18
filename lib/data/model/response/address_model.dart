@@ -1,7 +1,4 @@
 
-
-import 'package:sixam_mart_store/data/model/response/zone_response_model.dart';
-
 class AddressModel {
   int id;
   String addressType;

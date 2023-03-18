@@ -431,5 +431,7 @@
   "enter_store_name": "أدخل اسم المتجر",
   "select_store_logo": "حدد شعار المتجر",
   "select_store_cover_photo": "حدد صورة غلاف المتجر",
-  "set_store_location": "حدد موقع المتجر"
+  "set_store_location": "حدد موقع المتجر",
+  "delivery_charge_per_km": "رسوم التوصيل لكل كيلومتر",
+  "enter_delivery_charge_per_km": "أدخل رسوم التوصيل لكل كيلومتر"
 }

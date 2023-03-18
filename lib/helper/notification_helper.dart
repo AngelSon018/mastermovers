@@ -142,7 +142,7 @@ class NotificationHelper {
 
   static Future<void> showTextNotification(String title, String body, NotificationBody notificationBody, FlutterLocalNotificationsPlugin fln) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      '6ammart', '6ammart', playSound: true,
+      'MasterMovers', 'MasterMovers', playSound: true,
       importance: Importance.max, priority: Priority.max, sound: RawResourceAndroidNotificationSound('notification'),
     );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -155,7 +155,7 @@ class NotificationHelper {
       contentTitle: title, htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      '6ammart', '6ammart', importance: Importance.max,
+      'MasterMovers', 'MasterMovers', importance: Importance.max,
       styleInformation: bigTextStyleInformation, priority: Priority.max, playSound: true,
       sound: RawResourceAndroidNotificationSound('notification'),
     );
@@ -172,7 +172,7 @@ class NotificationHelper {
       summaryText: body, htmlFormatSummaryText: true,
     );
     final AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      '6ammart', '6ammart',
+      'MasterMovers', 'MasterMovers',
       largeIcon: FilePathAndroidBitmap(largeIconPath), priority: Priority.max, playSound: true,
       styleInformation: bigPictureStyleInformation, importance: Importance.max,
       sound: RawResourceAndroidNotificationSound('notification'),

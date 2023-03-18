@@ -259,10 +259,12 @@ class StoreController extends GetxController implements GetxService {
     update();
     Response response = await storeRepo.updateStore(store, _rawLogo, _rawCover, min, max, type);
     if(response.statusCode == 200) {
-      Get.back();
-      Get.find<AuthController>().getProfile();
+      await Get.find<AuthController>().getProfile();
+      Get.find<StoreController>().getItemList('1', 'all');
+      Get.find<StoreController>().getStoreReviewList(Get.find<AuthController>().profileModel.stores[0].id);
       showCustomSnackBar(Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText
           ? 'restaurant_settings_updated_successfully'.tr : 'store_settings_updated_successfully'.tr, isError: false);
+      Get.offAllNamed(RouteHelper.getMainRoute('cart'));
     }else {
       ApiChecker.checkApi(response);
     }

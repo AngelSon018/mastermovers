@@ -72,12 +72,12 @@ class OrderItemWidget extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL, horizontal: Dimensions.PADDING_SIZE_SMALL),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
                 ),
                 child: Text(
                   Get.find<SplashController>().configModel.moduleConfig.module.unit ? orderDetails.itemDetails.unitType ?? ''
                       : orderDetails.itemDetails.veg == 0 ? 'non_veg'.tr : 'veg'.tr,
-                  style: robotoRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL, color: Colors.white),
+                  style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL, color: Theme.of(context).primaryColor),
                 ),
               ) : SizedBox(),
             ]),

@@ -1,7 +1,6 @@
 import 'package:sixam_mart_store/controller/auth_controller.dart';
 import 'package:sixam_mart_store/controller/splash_controller.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/images.dart';
 import 'package:sixam_mart_store/util/styles.dart';
@@ -10,7 +9,6 @@ import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
 import 'package:sixam_mart_store/view/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class SignInScreen extends StatelessWidget {
   final FocusNode _emailFocus = FocusNode();

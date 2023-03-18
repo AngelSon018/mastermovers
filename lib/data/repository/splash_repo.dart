@@ -59,8 +59,4 @@ class SplashRepo {
     );
   }
 
-  Future<Response> getModules() async {
-    return await apiClient.getData(AppConstants.MODULES_URI);
-  }
-
 }

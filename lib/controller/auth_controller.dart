@@ -7,6 +7,7 @@ import 'package:sixam_mart_store/controller/splash_controller.dart';
 import 'package:sixam_mart_store/data/api/api_checker.dart';
 import 'package:sixam_mart_store/data/model/body/store_body.dart';
 import 'package:sixam_mart_store/data/model/response/address_model.dart';
+import 'package:sixam_mart_store/data/model/response/module_model.dart';
 import 'package:sixam_mart_store/data/model/response/place_details_model.dart';
 import 'package:sixam_mart_store/data/model/response/prediction_model.dart';
 import 'package:sixam_mart_store/data/model/response/profile_model.dart';
@@ -45,6 +46,8 @@ class AuthController extends GetxController implements GetxService {
   int _zoneID = 0;
   List<String> _deliveryTimeTypeList = ['minute', 'hours', 'days'];
   int _deliveryTimeTypeIndex = 0;
+  List<ModuleModel> _moduleList;
+  int _selectedModuleIndex = 0;
 
   bool get isLoading => _isLoading;
   bool get notification => _notification;
@@ -64,6 +67,13 @@ class AuthController extends GetxController implements GetxService {
   int get zoneID => _zoneID;
   List<String> get deliveryTimeTypeList => _deliveryTimeTypeList;
   int get deliveryTimeTypeIndex => _deliveryTimeTypeIndex;
+  List<ModuleModel> get moduleList => _moduleList;
+  int get selectedModuleIndex => _selectedModuleIndex;
+
+  void selectModuleIndex(int index) {
+    _selectedModuleIndex = index;
+    update();
+  }
 
   Future<ResponseModel> login(String email, String password) async {
     _isLoading = true;
@@ -296,6 +306,7 @@ class AuthController extends GetxController implements GetxService {
       _zoneList = [];
       response.body.forEach((zone) => _zoneList.add(ZoneModel.fromJson(zone)));
       print('zone list -----------$_zoneList');
+      await getModules(_zoneList[0].id);
     } else {
       ApiChecker.checkApi(response);
     }
@@ -316,8 +327,9 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  void setZoneIndex(int index) {
+  Future<void> setZoneIndex(int index) async {
     _selectedZoneIndex = index;
+    await getModules(zoneList[selectedZoneIndex].id);
     update();
   }
 
@@ -500,4 +512,14 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
+  Future<void> getModules(int zoneId) async {
+    Response response = await authRepo.getModules(zoneId);
+    if (response.statusCode == 200) {
+      _moduleList = [];
+      response.body.forEach((storeCategory) => _moduleList.add(ModuleModel.fromJson(storeCategory)));
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    update();
+  }
 }

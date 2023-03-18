@@ -1,6 +1,5 @@
 import 'package:sixam_mart_store/data/api/api_checker.dart';
 import 'package:sixam_mart_store/data/model/response/config_model.dart';
-import 'package:sixam_mart_store/data/model/response/module_model.dart';
 import 'package:sixam_mart_store/data/repository/splash_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +16,6 @@ class SplashController extends GetxController implements GetxService {
   String _moduleType;
   Map<String, dynamic> _data = Map();
   String _htmlText;
-  List<ModuleModel> _moduleList;
-  int _selectedModuleIndex = 0;
 
   ConfigModel get configModel => _configModel;
   DateTime get currentTime => _currentTime;
@@ -26,24 +23,6 @@ class SplashController extends GetxController implements GetxService {
   int get moduleID => _moduleID;
   String get moduleType => _moduleType;
   String get htmlText => _htmlText;
-  List<ModuleModel> get moduleList => _moduleList;
-  int get selectedModuleIndex => _selectedModuleIndex;
-
-  void selectModuleIndex(int index) {
-    _selectedModuleIndex = index;
-    update();
-  }
-
-  Future<void> getModules() async {
-    Response response = await splashRepo.getModules();
-    if (response.statusCode == 200) {
-      _moduleList = [];
-      response.body.forEach((storeCategory) => _moduleList.add(ModuleModel.fromJson(storeCategory)));
-    } else {
-      ApiChecker.checkApi(response);
-    }
-    update();
-  }
 
   Future<bool> getConfigData() async {
     Response response = await splashRepo.getConfigData();

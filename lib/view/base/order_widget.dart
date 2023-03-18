@@ -3,7 +3,6 @@ import 'package:sixam_mart_store/helper/date_converter.dart';
 import 'package:sixam_mart_store/helper/route_helper.dart';
 import 'package:sixam_mart_store/util/dimensions.dart';
 import 'package:sixam_mart_store/util/styles.dart';
-import 'package:sixam_mart_store/view/screens/order/order_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -48,13 +47,13 @@ class OrderWidget extends StatelessWidget {
             showStatus ? Container(
               padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL, vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
               ),
               alignment: Alignment.center,
               child: Text(
                 orderModel.orderStatus.toUpperCase(),
-                style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: Theme.of(context).cardColor),
+                style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: Theme.of(context).primaryColor),
               ),
             ) : Text(
               '${orderModel.detailsCount} ${orderModel.detailsCount < 2 ? 'item'.tr : 'items'.tr}',
